@@ -1,0 +1,4 @@
+NAME;MASS;X;Y;IMAGE
+Mars;20;800;400;mars.png
+Jupiter;50;200;100;jupiter.png
+Neptune;35;900;50;neptune.png
