@@ -5,13 +5,13 @@ import physics
 class Spacecraft(pygame.sprite.Sprite):
 
     def __init__(self):
-        super().__init__()
+        pygame.sprite.Sprite.__init__(self)
         self.image = pygame.transform.rotate(pygame.transform.scale_by(pygame.image.load("fusee.png"), 0.15), 90)
         self.image_copy = self.image
         self.image.set_colorkey((0, 0, 0))
         self.mass = 1
         self.pos = [200, 500]
-        self.rect = self.image.get_rect(topleft=self.pos)
+        self.rect = self.image.get_rect(center=self.pos)
         self.angle = math.pi / 2
         self.angle_copy = self.angle
 

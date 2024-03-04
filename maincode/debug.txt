@@ -1,0 +1,4 @@
+grav_attraction=0
+player_move=1
+player_rotate=1
+player_fire=1
