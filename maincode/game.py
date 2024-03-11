@@ -51,7 +51,7 @@ class Game():
         f.close()
         for ligne in self.data_list:
             data = split_ch(ligne, ';')
-            planet = Planets((int(data[2]), int(data[3])), int(data[1]), str(data[4]))
+            planet = Planets((int(data[2]), int(data[3])), int(data[1]), str(data[4]), float(data[5]))
             self.planets_group.add(planet)
 
 

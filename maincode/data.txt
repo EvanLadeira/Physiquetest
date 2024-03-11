@@ -1,4 +1,9 @@
-NAME;MASS;X;Y;IMAGE
-Mars;20;800;650;mars.png
-Jupiter;50;200;150;jupiter.png
-Neptune;35;900;100;neptune.png
+NAME;MASS;X;Y;IMAGE;FACTOR
+Mercure;1;10;10;mercure.png;0.15
+Venus;1;100;10;venus.png;0.15
+Terre;1;300;10;terre.png;0.05
+Mars;20;600;10;mars.png;1
+Jupiter;50;500;100;jupiter.png;1
+Saturne; 1;100;400;saturne.png;0.25
+Uranus;1;700;700;uranus.png;0.30
+Neptune;35;900;750;neptune.png;0.15
