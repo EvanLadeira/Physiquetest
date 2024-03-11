@@ -83,44 +83,45 @@ class Game():
 
     def draw_game(self):
 
-        self.screen.fill('white')
+        '''
+        Gère l'affichage du jeu
+        '''
+
+        self.screen.fill('black')
+
+        #Vérifie si la gravité des projectiles est activée
+        if self.grav_attraction_proj:
+            if self.player_fired:
+                self.g_vec_projectile = physics.force_grav(self.projectile_sprite.pos, self.data_list) * 100
+        else:
+            self.g_vec_projectile = (0, 0)
+
+        #Déplace le projectile si le joueur a tiré
+        if self.player_fired:
+            self.projectile_sprite.move(self.g_vec_projectile)
+            self.screen.blit(self.projectile_sprite.image, (
+                self.projectile_sprite.pos[0],
+                self.projectile_sprite.pos[1]))
+
+        #Vérifie si la gravité de la fusée est activée
+        if self.grav_attraction_fusee:
+            self.g_vec_spacecraft = physics.force_grav(self.spacecraft_sprite.pos, self.data_list)
+        else:
+            self.g_vec_spacecraft = (0, 0)
+
+        #Déplace la fusée
+        self.spacecraft_sprite.move(self.spacecraft_sprite.movement_vector, self.spacecraft_sprite.propulsion,
+                                    self.g_vec_spacecraft)
 
         self.screen.blit(self.spacecraft_sprite.image_copy, (
             self.spacecraft_sprite.pos[0] - int(self.spacecraft_sprite.image_copy.get_width() / 2),
             self.spacecraft_sprite.pos[1] - int(self.spacecraft_sprite.image_copy.get_height() / 2)))
 
 
-        if self.grav_attraction_fusee:
-
-            self.g_vec_spacecraft = physics.force_grav(self.spacecraft_sprite.pos, self.data_list)
-
-        else:
-
-            self.g_vec_spacecraft = (0, 0)
-
-        if self.grav_attraction_proj:
-
-            if self.player_fired:
-
-                self.g_vec_projectile = physics.force_grav(self.projectile_sprite.pos, self.data_list) * 100
-
-        else:
-
-            self.g_vec_projectile = (0, 0)
-
-
-        self.spacecraft_sprite.move(self.spacecraft_sprite.movement_vector, self.spacecraft_sprite.thrust_vector, self.g_vec_spacecraft)
-
-        if self.player_fired:
-
-            self.projectile_sprite.move(self.g_vec_projectile)
-            self.screen.blit(self.projectile_sprite.image, (
-                self.projectile_sprite.pos[0],
-                self.projectile_sprite.pos[1]))
-
-
     def update(self):
-
+        '''
+        Met à jour tous les sprites
+        '''
         self.spacecraft_sprite.update()
         self.planets_group.update()
         self.planets_group.draw(self.screen)

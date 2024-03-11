@@ -28,9 +28,3 @@ def movement_vector(thrust_vector = (0, 0), initial_vector: tuple = (0, 0), grav
     x = thrust_vector[0] + initial_vector[0] + grav_vector[0]
     y = thrust_vector[1] + initial_vector[1] + grav_vector[1]
     return x, y
-
-'''initial_vector = (0, 0)
-vector1 = movement_vector(propulsion(3.14), initial_vector)
-print("vector1 : ", vector1)
-'''
-
