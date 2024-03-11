@@ -1,4 +1,5 @@
-grav_attraction=0
+grav_attraction_fusee=0
+grav_attraction_proj=1
 player_move=1
 player_rotate=1
 player_fire=1

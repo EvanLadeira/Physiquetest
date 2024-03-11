@@ -16,10 +16,10 @@ class Spacecraft(pygame.sprite.Sprite):
         self.angle_copy = self.angle
 
         self.movement_vector = (0, 0)
-        self.thrust_vector = (0, 0)
+        self.propulsion = (0, 0)
 
     def boost(self):
-        self.thrust_vector = physics.thrust_vector(self.angle_copy)
+        self.propulsion = physics.propulsion(self.angle_copy)
 
     def boost_back(self):
         self.thrust_vector = physics.thrust_vector(self.angle_copy + math.pi)
