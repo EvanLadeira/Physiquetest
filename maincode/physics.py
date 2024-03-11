@@ -12,8 +12,8 @@ def force_grav(pos, data_list):
     sum_force_y = 0
     for line in data_list:
         data = line.split(';')
-        distance_x = pos[0]-int(data[2])
-        distance_y = pos[1]-int(data[3])
+        distance_x = pos[0]-(int(data[2]))
+        distance_y = pos[1]-(int(data[3]))
         distance = sqrt(distance_x**2 + distance_y**2)
         vec = [distance_x, distance_y]
         vec[0] /= distance
