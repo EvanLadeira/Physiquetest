@@ -16,9 +16,9 @@ def force_grav(pos, data_list):
         distance_y = pos[1]-int(data[3])
         distance = sqrt(distance_x**2 + distance_y**2)
         vec = [distance_x, distance_y]
-        vec[0]/=distance
-        vec[1]/=distance
-        F= (6.67*10E-11) * (int(data[1])*10E10) / distance**2
+        vec[0] /= distance
+        vec[1] /= distance
+        F = (6.67*10E-11) * (int(data[1])*10E10) / distance**2
         sum_force_x += -vec[0]*F
         sum_force_y += -vec[1]*F
     return sum_force_x, sum_force_y
