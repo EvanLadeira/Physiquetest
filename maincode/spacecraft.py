@@ -22,7 +22,7 @@ class Spacecraft(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.pos)
         self.angle = math.pi / 2
         self.angle_copy = self.angle
-
+        #Ajout de vie/bouclier
         self.hp = 3
         self.shield = 0
 

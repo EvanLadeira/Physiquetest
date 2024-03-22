@@ -1,6 +1,7 @@
 import pygame
 import physics
 from tools_functions import *
+import random
 
 
 from items import Item
@@ -25,7 +26,8 @@ class Game():
 
         self.planets_group = pygame.sprite.Group()
         self.projectiles = pygame.sprite.GroupSingle()
-        self.items = pygame.sprite.GroupSingle()
+        #ajout d'un groupe d'item
+        self.items = pygame.sprite.Group()
 
         self.player_fired = False
 
@@ -65,8 +67,7 @@ class Game():
             planet = Planets((int(data[2]), int(data[3])), int(data[1]), str(data[4]), float(data[5]))
             self.planets_group.add(planet)
 
-        a = Item()
-        self.items.add(a)
+
 
 
     def get_input(self):
@@ -137,9 +138,14 @@ class Game():
         Met à jour tous les sprites
         '''
         self.spacecraft_sprite.update()
+        self.items.draw(self.screen)
         self.planets_group.update()
         self.planets_group.draw(self.screen)
-        self.items.draw(self.screen)
         if self.player_fired:
             self.projectile_sprite.update()
+
+        #Ajout aléatoire d'items
+        if random.randint(0, 200) == 1:
+            self.items.add(Item((random.randint(0, screen_width), random.randint(0, screen_height))))
+            print("ajout d'item")
 
