@@ -51,4 +51,3 @@ class Spacecraft(pygame.sprite.Sprite):
         #Déplace la fusée
         self.pos[0] += self.movement_vector[0]
         self.pos[1] += self.movement_vector[1]
-

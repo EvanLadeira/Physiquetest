@@ -117,6 +117,10 @@ class Game():
             self.spacecraft_sprite.pos[0] - int(self.spacecraft_sprite.image_copy.get_width() / 2),
             self.spacecraft_sprite.pos[1] - int(self.spacecraft_sprite.image_copy.get_height() / 2)))
 
+    def collision_proj(self):
+
+        if self.player_fired:
+
 
     def update(self):
         '''
@@ -127,5 +131,7 @@ class Game():
         self.planets_group.draw(self.screen)
 
         if self.player_fired:
-
             self.projectile_sprite.update()
+
+        if self.collision_proj():
+            self.projectile_sprite.kill()
