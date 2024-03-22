@@ -23,6 +23,9 @@ class Spacecraft(pygame.sprite.Sprite):
         self.angle = math.pi / 2
         self.angle_copy = self.angle
 
+        self.hp = 3
+        self.shield = 0
+
         #Vectors
         self.movement_vector = (0, 0)
         self.propulsion = (0, 0)
