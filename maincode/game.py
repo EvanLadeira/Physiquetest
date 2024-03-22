@@ -3,6 +3,7 @@ import physics
 from tools_functions import *
 
 
+from items import Item
 from planets import Planets
 from spacecraft import Spacecraft
 from projectiles import Projectiles
@@ -26,6 +27,8 @@ class Game():
         self.projectiles = pygame.sprite.GroupSingle()
 
         self.player_fired = False
+
+        self.items = []
 
 
 
@@ -60,6 +63,7 @@ class Game():
             data = split_ch(ligne, ';')
             planet = Planets((int(data[2]), int(data[3])), int(data[1]), str(data[4]), float(data[5]))
             self.planets_group.add(planet)
+        a = Item()
 
 
     def get_input(self):
@@ -124,10 +128,6 @@ class Game():
             self.spacecraft_sprite.pos[0] - int(self.spacecraft_sprite.image_copy.get_width() / 2),
             self.spacecraft_sprite.pos[1] - int(self.spacecraft_sprite.image_copy.get_height() / 2)))
 
-    def collision_proj(self):
-
-        if self.player_fired:
-
 
     def update(self):
         '''
@@ -136,9 +136,6 @@ class Game():
         self.spacecraft_sprite.update()
         self.planets_group.update()
         self.planets_group.draw(self.screen)
-
         if self.player_fired:
             self.projectile_sprite.update()
 
-        if self.collision_proj():
-            self.projectile_sprite.kill()
