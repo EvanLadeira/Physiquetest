@@ -25,10 +25,11 @@ class Game():
 
         self.planets_group = pygame.sprite.Group()
         self.projectiles = pygame.sprite.GroupSingle()
+        self.items = pygame.sprite.GroupSingle()
 
         self.player_fired = False
 
-        self.items = []
+
 
 
 
@@ -63,7 +64,9 @@ class Game():
             data = split_ch(ligne, ';')
             planet = Planets((int(data[2]), int(data[3])), int(data[1]), str(data[4]), float(data[5]))
             self.planets_group.add(planet)
+
         a = Item()
+        self.items.add(a)
 
 
     def get_input(self):
@@ -136,6 +139,7 @@ class Game():
         self.spacecraft_sprite.update()
         self.planets_group.update()
         self.planets_group.draw(self.screen)
+        self.items.draw(self.screen)
         if self.player_fired:
             self.projectile_sprite.update()
 
