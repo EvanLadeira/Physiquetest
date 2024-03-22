@@ -7,7 +7,7 @@ class Spacecraft(pygame.sprite.Sprite):
     def __init__(self, screen_size):
         pygame.sprite.Sprite.__init__(self)
 
-        #limites de la carte
+        #limites de la carte (Changement)
         self.screen_width = screen_size[0]
         self.screen_height = screen_size[1]
 
@@ -56,7 +56,7 @@ class Spacecraft(pygame.sprite.Sprite):
         self.pos[0] += self.movement_vector[0]
         self.pos[1] += self.movement_vector[1]
 
-        #calcul des dépassement des limites du terrain
+        #calcul des dépassement des limites du terrain (Changement)
         if self.pos[0] > self.screen_width:
             self.pos[0] -= self.screen_width
         elif self.pos[0] < 0:

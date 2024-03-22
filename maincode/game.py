@@ -6,14 +6,17 @@ from tools_functions import *
 from planets import Planets
 from spacecraft import Spacecraft
 from projectiles import Projectiles
+
+#Calcul de la taille de l'écran (Changement)
 pygame.init()
 info = pygame.display.Info()
 screen_width, screen_height = info.current_w, info.current_h
-print(screen_width, screen_height)
+
 class Game():
 
     def __init__(self):
 
+        #initialisation de l'écran a la bonne taille (Changement)
         self.screen = pygame.display.set_mode((screen_width, screen_height))
         self.spacecraft = pygame.sprite.GroupSingle()
         self.spacecraft_sprite = Spacecraft((screen_width, screen_height))
