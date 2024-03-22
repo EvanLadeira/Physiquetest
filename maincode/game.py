@@ -6,20 +6,24 @@ from tools_functions import *
 from planets import Planets
 from spacecraft import Spacecraft
 from projectiles import Projectiles
-
+pygame.init()
+info = pygame.display.Info()
+screen_width, screen_height = info.current_w, info.current_h
+print(screen_width, screen_height)
 class Game():
 
     def __init__(self):
 
-        self.screen = pygame.display.set_mode((1600, 800))
+        self.screen = pygame.display.set_mode((screen_width, screen_height))
         self.spacecraft = pygame.sprite.GroupSingle()
-        self.spacecraft_sprite = Spacecraft()
+        self.spacecraft_sprite = Spacecraft((screen_width, screen_height))
         self.spacecraft.add(self.spacecraft_sprite)
 
         self.planets_group = pygame.sprite.Group()
         self.projectiles = pygame.sprite.GroupSingle()
 
         self.player_fired = False
+
 
 
     def config(self):
