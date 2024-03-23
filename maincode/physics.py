@@ -1,6 +1,13 @@
 from math import *
 
 
+def calcul_distance(pos1, pos2):
+    dx = pos1[0] - pos2[0]
+    dy = pos1[1] - pos2[1]
+    d = sqrt(dx**2 + dy**2)
+    return {"distance":d, "distance_coord":(dx, dy)}
+
+
 def propulsion(angle):
     x = -cos(angle)*0.15
     y = -sin(angle)*0.15
@@ -12,9 +19,13 @@ def force_grav(pos, data_list):
     sum_force_y = 0
     for line in data_list:
         data = line.split(';')
-        distance_x = pos[0]-(int(data[2]))
-        distance_y = pos[1]-(int(data[3]))
-        distance = sqrt(distance_x**2 + distance_y**2)
+        #distance_x = pos[0]-(int(data[2]))
+        #distance_y = pos[1]-(int(data[3]))
+        #distance = sqrt(distance_x**2 + distance_y**2)
+        distance_data = calcul_distance(pos, (int(data[2]), (int(data[3]))))
+        distance_x = distance_data["distance_coord"][0]
+        distance_y = distance_data["distance_coord"][1]
+        distance = distance_data["distance"]
         vec = [distance_x, distance_y]
         vec[0] /= distance
         vec[1] /= distance

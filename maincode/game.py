@@ -80,6 +80,10 @@ class Game():
                 self.player_fired = True
                 self.projectile_sprite = Projectiles(self.spacecraft_sprite.pos, self.spacecraft_sprite.angle_copy, self.spacecraft_sprite.image_copy)
                 self.projectiles.add(self.projectile_sprite)
+        #STOP the spacecraft
+        if keys[pygame.K_h]:
+            self.spacecraft_sprite.movement_vector = (0,0)
+
 
     def draw_game(self):
 
@@ -117,9 +121,13 @@ class Game():
             self.spacecraft_sprite.pos[0] - int(self.spacecraft_sprite.image_copy.get_width() / 2),
             self.spacecraft_sprite.pos[1] - int(self.spacecraft_sprite.image_copy.get_height() / 2)))
 
-    def collision_proj(self):
-
-        if self.player_fired:
+    def collide_proj(self):
+        for planet in self.planets_group:
+            if physics.calcul_distance(self.projectile_sprite.pos, planet.pos)["distance"] < planet.image.get_width()/2:
+                self.projectiles.remove(self.projectile_sprite)
+                self.projectile_sprite.kill()
+                self.player_fired = False
+                break
 
 
     def update(self):
@@ -132,6 +140,5 @@ class Game():
 
         if self.player_fired:
             self.projectile_sprite.update()
+            self.collide_proj()
 
-        if self.collision_proj():
-            self.projectile_sprite.kill()
