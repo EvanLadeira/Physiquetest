@@ -129,6 +129,12 @@ class Game():
                 self.player_fired = False
                 break
 
+    def collide_spacecraft(self):
+        for planet in self.planets_group:
+            if physics.calcul_distance(self.spacecraft_sprite.pos, planet.pos)["distance"] < planet.image.get_width()/2:
+                print("collision fusée-planète")
+                break
+
 
     def update(self):
         '''
@@ -137,6 +143,8 @@ class Game():
         self.spacecraft_sprite.update()
         self.planets_group.update()
         self.planets_group.draw(self.screen)
+
+        self.collide_spacecraft()
 
         if self.player_fired:
             self.projectile_sprite.update()
