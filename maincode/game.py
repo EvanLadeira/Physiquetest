@@ -40,6 +40,7 @@ class Game():
         self.can_move = int(debug['player_move'])
         self.can_fire = int(debug['player_fire'])
         self.can_rotate = int(debug['player_rotate'])
+        self.collision = int(debug['collision'])
 
 
     def map_init(self):
@@ -144,9 +145,10 @@ class Game():
         self.planets_group.update()
         self.planets_group.draw(self.screen)
 
-        self.collide_spacecraft()
 
-        if self.player_fired:
-            self.projectile_sprite.update()
-            self.collide_proj()
+        if self.collision:
+            self.collide_spacecraft()
 
+            if self.player_fired:
+                self.projectile_sprite.update()
+                self.collide_proj()
