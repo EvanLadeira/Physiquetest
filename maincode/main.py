@@ -10,7 +10,9 @@ game = Game()
 game.map_init()
 game.config()
 
+
 while True:
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -19,7 +21,7 @@ while True:
     game.get_input()
     game.draw_game()
     game.update()
+    game.change_turn()
 
-
-    pygame.display.flip()
     clock.tick(60)
+    pygame.display.flip()

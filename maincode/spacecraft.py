@@ -4,7 +4,7 @@ import physics
 
 class Spacecraft(pygame.sprite.Sprite):
 
-    def __init__(self):
+    def __init__(self, posinit):
         pygame.sprite.Sprite.__init__(self)
 
         #Images
@@ -14,7 +14,7 @@ class Spacecraft(pygame.sprite.Sprite):
 
         #Specs
         self.mass = 1
-        self.pos = [200, 500]
+        self.pos = posinit
         self.rect = self.image.get_rect(center=self.pos)
         self.angle = math.pi / 2
         self.angle_copy = self.angle

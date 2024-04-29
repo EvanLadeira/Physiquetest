@@ -1,5 +1,6 @@
 import pygame
 import physics
+import random
 from tools_functions import *
 
 
@@ -12,14 +13,20 @@ class Game():
     def __init__(self):
 
         self.screen = pygame.display.set_mode((1600, 800))
-        self.spacecraft = pygame.sprite.GroupSingle()
-        self.spacecraft_sprite = Spacecraft()
-        self.spacecraft.add(self.spacecraft_sprite)
+        #self.spacecraft = pygame.sprite.GroupSingle()
 
         self.planets_group = pygame.sprite.Group()
         self.projectiles = pygame.sprite.GroupSingle()
-
         self.player_fired = False
+
+        self.changing_turn = False
+        self.turn_of_player = 1
+
+        self.nb_players = 3
+        self.list_players = []
+
+        self.h_is_pressed = False
+
 
 
     def config(self):
@@ -33,6 +40,7 @@ class Game():
         for ligne in self.config_list:
             config = split_ch(ligne, '=')
             debug[config[0]] = config[1]
+        self.players()
 
         # debug bool
         self.grav_attraction_fusee = int(debug['grav_attraction_fusee'])
@@ -41,6 +49,14 @@ class Game():
         self.can_fire = int(debug['player_fire'])
         self.can_rotate = int(debug['player_rotate'])
         self.collision = int(debug['collision'])
+
+
+
+    def players(self):
+        for i in range(self.nb_players):
+            self.spacecraft_sprite = Spacecraft(([random.randint(0, 1000), 500]))
+            self.list_players.append(self.spacecraft_sprite)
+
 
 
     def map_init(self):
@@ -56,6 +72,7 @@ class Game():
             self.planets_group.add(planet)
 
 
+
     def get_input(self):
         '''
         Detecte la pression des touches dans le jeu et appelle les méthodes liées aux actions
@@ -64,26 +81,33 @@ class Game():
         # power
         if self.can_move:
             if keys[pygame.K_UP]:
-                self.spacecraft_sprite.boost()
+                self.list_players[self.turn_of_player-1].boost()
             elif keys[pygame.K_DOWN]:
-                self.spacecraft_sprite.boost_back()
+                self.list_players[self.turn_of_player-1].boost_back()
             else:
-                self.spacecraft_sprite.no_boost()
+                self.list_players[self.turn_of_player-1].no_boost()
         # rotations
         if self.can_rotate:
             if keys[pygame.K_RIGHT]:
-                self.spacecraft_sprite.turn_right()
+                self.list_players[self.turn_of_player-1].turn_right()
             if keys[pygame.K_LEFT]:
-                self.spacecraft_sprite.turn_left()
+                self.list_players[self.turn_of_player-1].turn_left()
         # fire
         if self.can_fire:
             if keys[pygame.K_SPACE]:
                 self.player_fired = True
-                self.projectile_sprite = Projectiles(self.spacecraft_sprite.pos, self.spacecraft_sprite.angle_copy, self.spacecraft_sprite.image_copy)
+                self.projectile_sprite = Projectiles(self.list_players[self.turn_of_player-1].pos, self.list_players[self.turn_of_player-1].angle_copy, self.list_players[self.turn_of_player-1].image_copy)
                 self.projectiles.add(self.projectile_sprite)
+
         #STOP the spacecraft
         if keys[pygame.K_h]:
-            self.spacecraft_sprite.movement_vector = (0,0)
+            if self.h_is_pressed == False:
+                self.changing_turn = True
+                self.list_players[self.turn_of_player-1].movement_vector = (0,0)
+                print("Tour du joueur : ", self.turn_of_player)
+                self.h_is_pressed = True
+        else:
+            self.h_is_pressed = False
 
 
     def draw_game(self):
@@ -93,7 +117,6 @@ class Game():
         '''
 
         self.screen.fill('black')
-
         #Vérifie si la gravité des projectiles est activée
         if self.grav_attraction_proj:
             if self.player_fired:
@@ -110,17 +133,22 @@ class Game():
 
         #Vérifie si la gravité de la fusée est activée
         if self.grav_attraction_fusee:
-            self.g_vec_spacecraft = physics.force_grav(self.spacecraft_sprite.pos, self.data_list)
+            self.g_vec_spacecraft = physics.force_grav(self.list_players[self.turn_of_player-1].pos, self.data_list)
         else:
             self.g_vec_spacecraft = (0, 0)
 
         #Déplace la fusée
-        self.spacecraft_sprite.move(self.spacecraft_sprite.movement_vector, self.spacecraft_sprite.propulsion,
+        self.list_players[self.turn_of_player-1].move(self.list_players[self.turn_of_player-1].movement_vector, self.list_players[self.turn_of_player-1].propulsion,
                                     self.g_vec_spacecraft)
 
-        self.screen.blit(self.spacecraft_sprite.image_copy, (
-            self.spacecraft_sprite.pos[0] - int(self.spacecraft_sprite.image_copy.get_width() / 2),
-            self.spacecraft_sprite.pos[1] - int(self.spacecraft_sprite.image_copy.get_height() / 2)))
+        #affiche les fusées
+        for sprite in self.list_players:
+            self.screen.blit(sprite.image_copy, (
+                sprite.pos[0] - int(sprite.image_copy.get_width() / 2),
+                sprite.pos[1] - int(sprite.image_copy.get_height() / 2)))
+
+
+
 
     def collide_proj(self):
         for planet in self.planets_group:
@@ -130,18 +158,21 @@ class Game():
                 self.player_fired = False
                 break
 
+
+
     def collide_spacecraft(self):
         for planet in self.planets_group:
-            if physics.calcul_distance(self.spacecraft_sprite.pos, planet.pos)["distance"] < planet.image.get_width()/2:
+            if physics.calcul_distance(self.list_players[self.turn_of_player-1].pos, planet.pos)["distance"] < planet.image.get_width()/2:
                 print("collision fusée-planète")
                 break
+
 
 
     def update(self):
         '''
         Met à jour tous les sprites
         '''
-        self.spacecraft_sprite.update()
+        self.list_players[self.turn_of_player-1].update()
         self.planets_group.update()
         self.planets_group.draw(self.screen)
 
@@ -150,5 +181,15 @@ class Game():
             self.collide_spacecraft()
 
             if self.player_fired:
-                self.projectile_sprite.update()
+                self.list_players[self.turn_of_player-1].update()
                 self.collide_proj()
+
+
+
+    def change_turn(self):
+        if self.changing_turn:
+            if self.turn_of_player == self.nb_players:
+                self.turn_of_player = 1
+            else:
+                self.turn_of_player += 1
+        self.changing_turn = False
