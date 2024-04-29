@@ -159,7 +159,6 @@ class Game():
                 break
 
 
-
     def collide_spacecraft(self):
         for planet in self.planets_group:
             if physics.calcul_distance(self.list_players[self.turn_of_player-1].pos, planet.pos)["distance"] < planet.image.get_width()/2:
@@ -169,6 +168,7 @@ class Game():
                 print("Tour du joueur : ", self.turn_of_player)
                 self.changing_turn = True
                 break
+
 
     def collide_proj_spacecraft(self):
         for spacecraft in self.list_players:
