@@ -3,7 +3,7 @@ Mercure;20;100;100;mercure.png;0.15
 Venus;20;350;150;venus.png;0.15
 Terre;20;390;380;terre.png;0.05
 Mars;20;600;400;mars.png;1
-Jupiter;50;700;250;jupiter.png;1
+Jupiter;40;700;250;jupiter.png;1
 Saturne;20;1400;400;saturne.png;0.25
 Uranus;20;1200;600;uranus.png;0.30
 Neptune;35;1300;750;neptune.png;0.15

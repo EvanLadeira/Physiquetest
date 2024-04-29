@@ -10,7 +10,7 @@ class Spacecraft(pygame.sprite.Sprite):
         #Images
         self.image = pygame.transform.rotate(pygame.transform.scale_by(pygame.image.load("fusee.png"), 0.15), 90)
         self.image_copy = self.image
-        self.image.set_colorkey((0, 0, 0))
+        self.image.convert_alpha()
 
         #Specs
         self.mass = 1

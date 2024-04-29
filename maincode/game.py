@@ -13,7 +13,6 @@ class Game():
     def __init__(self):
 
         self.screen = pygame.display.set_mode((1600, 800))
-        #self.spacecraft = pygame.sprite.GroupSingle()
 
         self.planets_group = pygame.sprite.Group()
         self.projectiles = pygame.sprite.GroupSingle()
@@ -139,7 +138,7 @@ class Game():
 
         #Déplace la fusée
         self.list_players[self.turn_of_player-1].move(self.list_players[self.turn_of_player-1].movement_vector, self.list_players[self.turn_of_player-1].propulsion,
-                                    self.g_vec_spacecraft)
+                                                      (self.g_vec_spacecraft[0]/10, self.g_vec_spacecraft[1]/10))
 
         #affiche les fusées
         for sprite in self.list_players:
@@ -148,11 +147,10 @@ class Game():
                 sprite.pos[1] - int(sprite.image_copy.get_height() / 2)))
 
 
-
-
     def collide_proj(self):
         for planet in self.planets_group:
             if physics.calcul_distance(self.projectile_sprite.pos, planet.pos)["distance"] < planet.image.get_width()/2:
+                print("collision planet-proj")
                 self.projectiles.remove(self.projectile_sprite)
                 self.projectile_sprite.kill()
                 self.player_fired = False
@@ -163,8 +161,19 @@ class Game():
     def collide_spacecraft(self):
         for planet in self.planets_group:
             if physics.calcul_distance(self.list_players[self.turn_of_player-1].pos, planet.pos)["distance"] < planet.image.get_width()/2:
-                print("collision fusée-planète")
+                print("collision spacecraft-planet")
                 break
+
+    def collide_proj_spacecraft(self):
+        for spacecraft in self.list_players:
+            if spacecraft != self.list_players[self.turn_of_player-1]:
+                if physics.calcul_distance(self.projectile_sprite.pos, spacecraft.pos)["distance"] < 30:
+                    print("collision proj-spacecraft")
+                    self.projectiles.remove(self.projectile_sprite)
+                    self.projectile_sprite.kill()
+                    self.player_fired = False
+                    break
+
 
 
 
