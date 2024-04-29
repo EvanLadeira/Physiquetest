@@ -21,7 +21,6 @@ while True:
     game.get_input()
     game.draw_game()
     game.update()
-    game.change_turn()
 
     clock.tick(60)
     pygame.display.flip()
