@@ -55,7 +55,7 @@ class Game():
     def players(self):
         for i in range(self.nb_players):
             self.spacecraft_sprite = Spacecraft(([random.randint(0, 1000), 500]))
-            self.list_pos_init.append(self.spacecraft_sprite.pos)
+            self.list_pos_init.append(self.spacecraft_sprite.pos.copy())
             self.list_players.append(self.spacecraft_sprite)
 
 
@@ -163,7 +163,7 @@ class Game():
         for planet in self.planets_group:
             if physics.calcul_distance(self.list_players[self.turn_of_player-1].pos, planet.pos)["distance"] < planet.image.get_width()/2:
                 print("collision spacecraft-planet")
-                self.list_players[self.turn_of_player-1].pos = self.list_pos_init[self.turn_of_player-1] #PROBLEME A CHANGERHJKLM%MLKJHHJKL
+                self.list_players[self.turn_of_player-1].pos = self.list_pos_init[self.turn_of_player-1].copy()
                 self.list_players[self.turn_of_player - 1].movement_vector = (0, 0)
                 print("Tour du joueur : ", self.turn_of_player)
                 self.changing_turn = True
@@ -182,6 +182,15 @@ class Game():
 
 
 
+    def change_turn(self):
+        if self.changing_turn:
+            if self.turn_of_player == self.nb_players:
+                self.turn_of_player = 1
+            else:
+                self.turn_of_player += 1
+        self.changing_turn = False
+
+
 
     def update(self):
         '''
@@ -194,17 +203,7 @@ class Game():
 
         if self.collision:
             self.collide_spacecraft()
-
             if self.player_fired:
                 self.list_players[self.turn_of_player-1].update()
                 self.collide_proj()
-
-
-
-    def change_turn(self):
-        if self.changing_turn:
-            if self.turn_of_player == self.nb_players:
-                self.turn_of_player = 1
-            else:
-                self.turn_of_player += 1
-        self.changing_turn = False
+                self.collide_proj_spacecraft()
