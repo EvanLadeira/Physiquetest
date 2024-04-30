@@ -25,6 +25,7 @@ class Game():
         self.list_players = []
         self.list_pos_init = []
 
+        self.spacecraft_stop = False
         self.h_is_pressed = False
 
 
@@ -83,17 +84,17 @@ class Game():
         # power
         if self.can_move:
             if keys[pygame.K_UP]:
-                self.list_players[self.turn_of_player-1].boost()
+                self.spacecraft.boost()
             elif keys[pygame.K_DOWN]:
-                self.list_players[self.turn_of_player-1].boost_back()
+                self.spacecraft.boost_back()
             else:
-                self.list_players[self.turn_of_player-1].no_boost()
+                self.spacecraft.no_boost()
         # rotations
         if self.can_rotate:
             if keys[pygame.K_RIGHT]:
-                self.list_players[self.turn_of_player-1].turn_right()
+                self.spacecraft.turn_right()
             if keys[pygame.K_LEFT]:
-                self.list_players[self.turn_of_player-1].turn_left()
+                self.spacecraft.turn_left()
         # fire
         if self.can_fire:
             if keys[pygame.K_SPACE]:
@@ -105,8 +106,7 @@ class Game():
         #STOP the spacecraft
         if keys[pygame.K_h]:
             if self.h_is_pressed == False:
-                self.changing_turn = True
-                self.list_players[self.turn_of_player-1].movement_vector = (0,0)
+                #self.spacecraft.movement_vector = (0,0)
                 print("Tour du joueur : ", self.turn_of_player)
                 self.spacecraft_stop = True
                 self.changing_turn = True
@@ -164,9 +164,9 @@ class Game():
 
         #Vérifie si la gravité de la fusée est activée
         if self.grav_attraction_fusee:
-            self.g_vec_spacecraft = physics.force_grav(self.list_players[self.turn_of_player-1].pos, self.data_list)
+            self.g_vec_spacecraft = physics.force_grav(self.spacecraft.pos, self.data_list)
         else:
-            self.g_vec_spacecraft = (0, 0)
+            self.g_vec_spacecraft = [0, 0]
 
         #Déplace la fusée
         self.spacecraft.move(self.spacecraft.movement_vector,
@@ -203,7 +203,7 @@ class Game():
 
     def collide_proj_spacecraft(self):
         for spacecraft in self.list_players:
-            if spacecraft != self.list_players[self.turn_of_player-1]:
+            if spacecraft != self.spacecraft:
                 if physics.calcul_distance(self.projectile_sprite.pos, spacecraft.pos)["distance"] < 30:
                     print("collision proj-spacecraft")
                     self.projectiles.remove(self.projectile_sprite)
@@ -228,7 +228,7 @@ class Game():
         '''
         Met à jour tous les sprites
         '''
-        self.list_players[self.turn_of_player-1].update()
+        self.spacecraft.update()
         self.planets_group.update()
         self.planets_group.draw(self.screen)
 
@@ -241,6 +241,6 @@ class Game():
         if self.collision:
             self.collide_spacecraft()
             if self.player_fired:
-                self.list_players[self.turn_of_player-1].update()
+                self.spacecraft.update()
                 self.collide_proj()
                 self.collide_proj_spacecraft()
