@@ -3,7 +3,7 @@ import physics
 from math import *
 
 class Projectiles(pygame.sprite.Sprite):
-    def __init__(self, player_rect, direction_angle, player_image):
+    def __init__(self, player_rect, direction_angle):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((10,10))
         self.image.fill("green")
@@ -16,7 +16,7 @@ class Projectiles(pygame.sprite.Sprite):
 
 
     def move(self, grav_vector):
-        self.movement_vector = physics.movement_vector(physics.movement_vector((0,0), self.movement_vector , grav_vector))
+        self.movement_vector = physics.movement_vector((0,0), self.movement_vector , grav_vector)
         self.pos[0] += self.movement_vector[0]
         self.pos[1] += self.movement_vector[1]
 

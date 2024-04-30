@@ -54,9 +54,10 @@ class Game():
 
     def players(self):
         for i in range(self.nb_players):
-            self.spacecraft_sprite = Spacecraft(([random.randint(0, 1000), 500]))
-            self.list_pos_init.append(self.spacecraft_sprite.pos.copy())
-            self.list_players.append(self.spacecraft_sprite)
+            self.spacecraft_sprite_to_add = Spacecraft(([random.randint(0, 1000), 500]))
+            self.list_pos_init.append(self.spacecraft_sprite_to_add.pos.copy())
+            self.list_players.append(self.spacecraft_sprite_to_add)
+            self.spacecraft = self.list_players[self.turn_of_player - 1]
 
 
 
@@ -97,7 +98,8 @@ class Game():
         if self.can_fire:
             if keys[pygame.K_SPACE]:
                 self.player_fired = True
-                self.projectile_sprite = Projectiles(self.list_players[self.turn_of_player-1].pos, self.list_players[self.turn_of_player-1].angle_copy, self.list_players[self.turn_of_player-1].image_copy)
+                self.projectile_sprite = Projectiles(self.spacecraft.pos,
+                                                     self.spacecraft.angle_copy)
                 self.projectiles.add(self.projectile_sprite)
 
         #STOP the spacecraft
@@ -106,9 +108,37 @@ class Game():
                 self.changing_turn = True
                 self.list_players[self.turn_of_player-1].movement_vector = (0,0)
                 print("Tour du joueur : ", self.turn_of_player)
+                self.spacecraft_stop = True
+                self.changing_turn = True
                 self.h_is_pressed = True
         else:
             self.h_is_pressed = False
+
+
+    def stop_spacecraft(self):
+        # position x
+        if 0.3>self.spacecraft.movement_vector[0]>0:
+            self.spacecraft.movement_vector[0] = 0
+        elif self.spacecraft.movement_vector[0]> 0.3:
+            self.spacecraft.movement_vector[0] -= 0.08
+        if -0.3<self.spacecraft.movement_vector[0]<0:
+            self.spacecraft.movement_vector[0] = 0
+        elif self.spacecraft.movement_vector[0]< -0.3:
+            self.spacecraft.movement_vector[0] += 0.08
+
+        # position y
+        if 0.3>self.spacecraft.movement_vector[1]>0:
+            self.spacecraft.movement_vector[1] = 0
+        elif self.spacecraft.movement_vector[1]> 0.3:
+            self.spacecraft.movement_vector[1] -= 0.08
+        if -0.3<self.spacecraft.movement_vector[1]<0:
+            self.spacecraft.movement_vector[1] = 0
+        elif self.spacecraft.movement_vector[1]< -0.3:
+            self.spacecraft.movement_vector[1] += 0.08
+
+
+
+
 
 
     def draw_game(self):
@@ -139,7 +169,8 @@ class Game():
             self.g_vec_spacecraft = (0, 0)
 
         #Déplace la fusée
-        self.list_players[self.turn_of_player-1].move(self.list_players[self.turn_of_player-1].movement_vector, self.list_players[self.turn_of_player-1].propulsion,
+        self.spacecraft.move(self.spacecraft.movement_vector,
+                                                      self.spacecraft.propulsion,
                                                       (self.g_vec_spacecraft[0]/10, self.g_vec_spacecraft[1]/10))
 
         #affiche les fusées
@@ -161,10 +192,10 @@ class Game():
 
     def collide_spacecraft(self):
         for planet in self.planets_group:
-            if physics.calcul_distance(self.list_players[self.turn_of_player-1].pos, planet.pos)["distance"] < planet.image.get_width()/2:
+            if physics.calcul_distance(self.spacecraft.pos, planet.pos)["distance"] < planet.image.get_width()/2:
                 print("collision spacecraft-planet")
-                self.list_players[self.turn_of_player-1].pos = self.list_pos_init[self.turn_of_player-1].copy()
-                self.list_players[self.turn_of_player - 1].movement_vector = (0, 0)
+                self.spacecraft.pos = self.list_pos_init[self.turn_of_player-1].copy()
+                self.spacecraft.movement_vector = [0, 0]
                 print("Tour du joueur : ", self.turn_of_player)
                 self.changing_turn = True
                 break
@@ -188,6 +219,7 @@ class Game():
                 self.turn_of_player = 1
             else:
                 self.turn_of_player += 1
+        self.spacecraft = self.list_players[self.turn_of_player - 1]
         self.changing_turn = False
 
 
@@ -199,7 +231,12 @@ class Game():
         self.list_players[self.turn_of_player-1].update()
         self.planets_group.update()
         self.planets_group.draw(self.screen)
-        self.change_turn()
+
+        if self.spacecraft_stop == True:
+            self.stop_spacecraft()
+            if self.spacecraft.movement_vector == [0,0]:
+                self.spacecraft_stop = False
+                self.change_turn()
 
         if self.collision:
             self.collide_spacecraft()

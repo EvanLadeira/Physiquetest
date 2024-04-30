@@ -45,7 +45,7 @@ class Spacecraft(pygame.sprite.Sprite):
         self.angle_copy += math.pi / 60
         self.image_copy = pygame.transform.rotate(self.image, math.degrees(self.angle - self.angle_copy))
 
-    def move(self, movement_vector, propulsion, grav_vector=(0, 0)):
+    def move(self, movement_vector, propulsion, grav_vector=[0, 0]):
         #Calcule le vecteur de déplacement de la fusée
         self.movement_vector = physics.movement_vector(propulsion, movement_vector, grav_vector)
         #Déplace la fusée
