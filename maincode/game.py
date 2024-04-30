@@ -192,8 +192,6 @@ class Game():
         self.planets_group.draw(self.screen)
         self.change_turn()
 
-        print(self.list_pos_init)
-
         if self.collision:
             self.collide_spacecraft()
 
