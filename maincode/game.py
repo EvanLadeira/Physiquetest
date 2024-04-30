@@ -109,7 +109,6 @@ class Game():
                 #self.spacecraft.movement_vector = (0,0)
                 print("Tour du joueur : ", self.turn_of_player)
                 self.spacecraft_stop = True
-                self.changing_turn = True
                 self.h_is_pressed = True
         else:
             self.h_is_pressed = False
@@ -236,7 +235,10 @@ class Game():
             self.stop_spacecraft()
             if self.spacecraft.movement_vector == [0,0]:
                 self.spacecraft_stop = False
-                self.change_turn()
+                self.changing_turn = True
+
+        if self.changing_turn == True:
+            self.change_turn()
 
         if self.collision:
             self.collide_spacecraft()
